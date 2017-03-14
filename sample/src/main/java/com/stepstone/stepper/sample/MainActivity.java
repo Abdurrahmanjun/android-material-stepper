@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, DelayedTransitionStepperActivity.class));
     }
 
+    @OnClick(R.id.stepperFeedback)
+    public void onStepperFeedback(View view) {
+        startActivity(new Intent(this, StepperFeedbackActivity.class));
+    }
+
     @OnClick(R.id.customNavigationButtons)
     public void onDifferentNextButtons(View view) {
         startActivity(new Intent(this, CustomNavigationButtonsActivity.class));

@@ -18,17 +18,14 @@ package com.stepstone.stepper.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Toast;
 
 import com.stepstone.stepper.StepperLayout;
-import com.stepstone.stepper.VerificationError;
-import com.stepstone.stepper.sample.adapter.FormFragmentStepAdapter;
+import com.stepstone.stepper.sample.adapter.StepperFeedbackFragmentStepAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProceedProgrammaticallyActivity extends AppCompatActivity implements StepperLayout.StepperListener, OnProceedListener {
+public class StepperFeedbackActivity extends AppCompatActivity {
 
     private static final String CURRENT_STEP_POSITION_KEY = "position";
 
@@ -40,11 +37,10 @@ public class ProceedProgrammaticallyActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setTitle("Stepper sample");
 
-        setContentView(R.layout.activity_default_dots);
+        setContentView(R.layout.activity_stepper_feedback);
         ButterKnife.bind(this);
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
-        mStepperLayout.setAdapter(new FormFragmentStepAdapter(getSupportFragmentManager(), this), startingStepPosition);
-        mStepperLayout.setListener(this);
+        mStepperLayout.setAdapter(new StepperFeedbackFragmentStepAdapter(getSupportFragmentManager(), this), startingStepPosition);
     }
 
     @Override
@@ -57,31 +53,13 @@ public class ProceedProgrammaticallyActivity extends AppCompatActivity implement
     public void onBackPressed() {
         final int currentStepPosition = mStepperLayout.getCurrentStepPosition();
         if (currentStepPosition > 0) {
-            mStepperLayout.onBackClicked();
+            //do nothing when operation is in progress
+            if (!mStepperLayout.isInProgress()) {
+                mStepperLayout.onBackClicked();
+            }
         } else {
             finish();
         }
     }
 
-    @Override
-    public void onCompleted(View completeButton) {
-        Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onError(VerificationError verificationError) {
-    }
-
-    @Override
-    public void onStepSelected(int newStepPosition) {
-    }
-
-    @Override
-    public void onReturn() {
-    }
-
-    @Override
-    public void onProceed() {
-        mStepperLayout.proceed();
-    }
 }

@@ -95,6 +95,12 @@
             android:text="@string/delayed_transition" />
 
         <Button
+            android:id="@+id/stepperFeedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stepper_feedback" />
+
+        <Button
             android:id="@+id/customNavigationButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

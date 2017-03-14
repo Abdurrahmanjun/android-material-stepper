@@ -13,6 +13,7 @@
     <string name="combination">Dots in portrait, tabs in landscape</string>
     <string name="custom_page_transformer">Custom PageTransformer</string>
     <string name="delayed_transition">Delayed transition</string>
+    <string name="stepper_feedback">Stepper feedback</string>
     <string name="custom_navigation_buttons">Custom navigation buttons</string>
     <string name="show_back_button">Show Back button on first step</string>
     <string name="no_fragments">No Fragment Stepper</string>
