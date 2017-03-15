@@ -12,7 +12,7 @@ Quoting the [documentation](https://www.google.com/design/spec/components/steppe
 
 ## Download (from JCenter)
 ```groovy
-compile 'com.stepstone.stepper:material-stepper:3.1.0'
+compile 'com.stepstone.stepper:material-stepper:3.2.0'
 ```
 
 ## Supported steppers
@@ -30,6 +30,8 @@ compile 'com.stepstone.stepper:material-stepper:3.1.0'
   - embedding the stepper anywhere in the view hierarchy and changing the stepper type for various device configurations, e.g. phone/tablet, portrait/landscape
   - step validation
   - use with Fragments or Views
+  - showing errors in tabs
+  - showing stepper feedback for ongoing operations (see [Stepper feedback](https://material.io/guidelines/components/steppers.html#steppers-types-of-steppers))
   
 ## Getting started
 
@@ -344,6 +346,53 @@ To show an error in the tabbed stepper if step verification fails you need to se
 <p><img src ="./gifs/error-on-tabs.gif" width="360" height="640"/></p>
 
 If you want to keep the error displayed when going back to the previous step you need to also set `ms_showErrorStateOnBackEnabled` to `true`.
+
+### Stepper feedback
+It is possible to show stepper feedback for ongoing operations (see [Stepper feedback](https://material.io/guidelines/components/steppers.html#steppers-types-of-steppers)).
+To do so you firstly need to set ```ms_stepperFeedbackType``` to one or more of:
+* ```tabs``` - shows a progress message instead of the tabs during operation,
+* ```content``` - shows a progress bar on top of the steps' content and partially fades the content out during operation,
+* ```disabled_bottom_navigation``` - disables the buttons in the bottom navigation during operation.
+The default is ```none``` which does nothing. It is possible to use multiple flags together.
+
+After setting this to show the feedback you need to call ```StepperLayout#showProgress(@NonNull String progressMessage)```
+and do hide the progress indicator you need to call ```StepperLayout#hideProgress()```.
+E.g.
+In layout:
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <com.stepstone.stepper.StepperLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/stepperLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ms_stepperType="tabs"
+        app:ms_stepperFeedbackType="tabs|content|disabled_bottom_navigation" />
+```
+
+and in BlockingStep:
+
+```java
+public class StepperFeedbackStepFragment extends Fragment implements BlockingStep {
+
+    //...
+
+    @Override
+    @UiThread
+    public void onNextClicked(final StepperLayout.OnNextClickedCallback callback) {
+        callback.getStepperLayout().showProgress("Operation in progress, please wait...");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                callback.goToNextStep();
+                callback.getStepperLayout().hideProgress();
+            }
+        }, 2000L);
+    }
+
+    //...
+
+```
 
 ### Custom styling
 Basic styling can be done by choosing the active and inactive step colors. 

@@ -28,22 +28,35 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY;
 @RestrictTo(LIBRARY)
 public class StepperFeedbackTypeFactory {
 
-    private static final String TAG = StepperFeedbackTypeFactory.class.getSimpleName();
-
     /**
      * Creates a stepper feedback type for provided arguments.
-     * @param feedbackType step feedback type, one of <code>attrs - ms_stepperFeedbackType</code>
-     * @param stepperLayout stepper layout to use with this stepper feedback type
+     * It can be a composition of several feedback types depending on the provided flags.
+     *
+     * @param feedbackTypeMask step feedback type mask, should contain one or more from <code>attrs - ms_stepperFeedbackType</code>
+     * @param stepperLayout stepper layout to use with the chosen stepper feedback type(s)
      * @return a stepper feedback type
      */
-    public static AbstractStepperFeedbackType createType(int feedbackType, StepperLayout stepperLayout) {
-        // TODO: 14/03/2017 Add a check for stepper type
-        // TODO: 14/03/2017 allow to build separately i.e. as you can with gravity
-        switch (feedbackType) {
-            case AbstractStepperFeedbackType.TABS_OVERLAY:
-                return new TabsOverlayStepperFeedbackType(stepperLayout);
-            default:
-                return new NoStepperFeedbackType(stepperLayout);
+    public static StepperFeedbackType createType(int feedbackTypeMask, StepperLayout stepperLayout) {
+
+        StepperFeedbackTypeComposite stepperFeedbackTypeComposite = new StepperFeedbackTypeComposite();
+
+        if ((feedbackTypeMask & StepperFeedbackType.NONE) != 0) {
+            //Add no more components if NONE type is selected
+            return stepperFeedbackTypeComposite;
         }
+
+        if ((feedbackTypeMask & StepperFeedbackType.TABS) != 0) {
+            stepperFeedbackTypeComposite.addComponent(new TabsStepperFeedbackType(stepperLayout));
+        }
+
+        if ((feedbackTypeMask & StepperFeedbackType.CONTENT) != 0) {
+            stepperFeedbackTypeComposite.addComponent(new ContentStepperFeedbackType(stepperLayout));
+        }
+
+        if ((feedbackTypeMask & StepperFeedbackType.DISABLED_BOTTOM_NAVIGATION) != 0) {
+            stepperFeedbackTypeComposite.addComponent(new DisabledBottomNavigationStepperFeedbackType(stepperLayout));
+        }
+
+        return stepperFeedbackTypeComposite;
     }
 }

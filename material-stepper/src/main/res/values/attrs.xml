@@ -69,8 +69,10 @@ limitations under the License.
 
         <!-- Type of stepper feedback -->
         <attr name="ms_stepperFeedbackType">
-            <enum name="none" value="0x01" />
-            <enum name="tabs_overlay" value="0x02" />
+            <flag name="none" value="1" />
+            <flag name="tabs" value="2" />
+            <flag name="content" value="4" />
+            <flag name="disabled_bottom_navigation" value="8" />
         </attr>
 
         <!-- Theme to use for even more custom styling of the stepper layout.

@@ -18,8 +18,11 @@ package com.stepstone.stepper.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.stepstone.stepper.StepperLayout;
+import com.stepstone.stepper.internal.feedback.StepperFeedbackType;
 import com.stepstone.stepper.sample.adapter.StepperFeedbackFragmentStepAdapter;
 
 import butterknife.Bind;
@@ -31,6 +34,8 @@ public class StepperFeedbackActivity extends AppCompatActivity {
 
     @Bind(R.id.stepperLayout)
     StepperLayout mStepperLayout;
+
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,5 +66,48 @@ public class StepperFeedbackActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_stepper_feedback, menu);
+        mMenu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (!mStepperLayout.isInProgress()
+                && (itemId == R.id.menu_feedback_content || itemId == R.id.menu_feedback_tabs || itemId == R.id.menu_feedback_nav)) {
+            toggleItem(item);
+            boolean tabsEnabled = mMenu.findItem(R.id.menu_feedback_tabs).isChecked();
+            boolean contentEnabled = mMenu.findItem(R.id.menu_feedback_content).isChecked();
+            boolean disablingBottomNavigationEnabled = mMenu.findItem(R.id.menu_feedback_nav).isChecked();
+
+            int feedbackMask = 0;
+            if (tabsEnabled) {
+                feedbackMask |= StepperFeedbackType.TABS;
+            }
+            if (contentEnabled) {
+                feedbackMask |= StepperFeedbackType.CONTENT;
+            }
+            if (disablingBottomNavigationEnabled) {
+                feedbackMask |= StepperFeedbackType.DISABLED_BOTTOM_NAVIGATION;
+            }
+            if (feedbackMask == 0) {
+                feedbackMask = StepperFeedbackType.NONE;
+            }
+            mStepperLayout.setFeedbackType(feedbackMask);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleItem(MenuItem item) {
+        item.setChecked(!item.isChecked());
+    }
+
 
 }

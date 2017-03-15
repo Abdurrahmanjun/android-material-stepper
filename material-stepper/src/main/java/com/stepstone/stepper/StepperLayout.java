@@ -43,7 +43,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.stepstone.stepper.adapter.StepAdapter;
-import com.stepstone.stepper.internal.feedback.AbstractStepperFeedbackType;
+import com.stepstone.stepper.internal.feedback.StepperFeedbackType;
 import com.stepstone.stepper.internal.feedback.StepperFeedbackTypeFactory;
 import com.stepstone.stepper.internal.type.AbstractStepperType;
 import com.stepstone.stepper.internal.type.StepperTypeFactory;
@@ -224,13 +224,13 @@ public class StepperLayout extends LinearLayout implements TabsContainer.TabItem
 
     private int mTypeIdentifier = AbstractStepperType.PROGRESS_BAR;
 
-    private int mFeedbackTypeIdentifier = AbstractStepperFeedbackType.NONE;
+    private int mFeedbackTypeMask = StepperFeedbackType.NONE;
 
     private StepAdapter mStepAdapter;
 
     private AbstractStepperType mStepperType;
 
-    private AbstractStepperFeedbackType mStepperFeedbackType;
+    private StepperFeedbackType mStepperFeedbackType;
 
     private int mCurrentStepPosition;
 
@@ -239,6 +239,8 @@ public class StepperLayout extends LinearLayout implements TabsContainer.TabItem
     private boolean mShowErrorStateOnBackEnabled;
 
     private boolean mTabNavigationEnabled;
+
+    private boolean mInProgress;
 
     @StyleRes
     private int mStepperLayoutTheme;
@@ -376,7 +378,9 @@ public class StepperLayout extends LinearLayout implements TabsContainer.TabItem
         }
     }
 
-    // TODO: 14/03/2017 JavaDoc
+    /**
+     * To be called when the user wants to go to the previous step.
+     */
     public void onBackClicked() {
         Step step = findCurrentStep();
 
@@ -533,19 +537,38 @@ public class StepperLayout extends LinearLayout implements TabsContainer.TabItem
         mStepperType.setErrorFlag(mCurrentStepPosition, hasError);
     }
 
-    // TODO: 13/03/2017 JavaDoc
+    /**
+     * Shows a progress indicator. This does not have to be a progress bar and it depends on chosen stepper feedback types.
+     * @param progressMessage optional progress message if supported by the selected types
+     */
     public void showProgress(@NonNull String progressMessage) {
+        mInProgress = true;
         mStepperFeedbackType.showProgress(progressMessage);
     }
 
-    // TODO: 13/03/2017 JavaDoc
+    /**
+     * Hides the progress indicator.
+     */
     public void hideProgress() {
+        mInProgress = false;
         mStepperFeedbackType.hideProgress();
     }
 
-    // TODO: 14/03/2017 JavaDoc
+    /**
+     * Checks if there's an ongoing operation i.e. if {@link #showProgress(String)} was called and not followed by {@link #hideProgress()} yet.
+     * @return true if in progress, false otherwise
+     */
     public boolean isInProgress() {
-        return mStepperFeedbackType.isInProgress();
+        return mInProgress;
+    }
+
+    /**
+     * Sets the mask for the stepper feedback type.
+     * @param feedbackTypeMask
+     */
+    public void setFeedbackType(int feedbackTypeMask) {
+        mFeedbackTypeMask = feedbackTypeMask;
+        mStepperFeedbackType = StepperFeedbackTypeFactory.createType(mFeedbackTypeMask, this);
     }
 
     @SuppressWarnings("RestrictedApi")
@@ -575,7 +598,7 @@ public class StepperLayout extends LinearLayout implements TabsContainer.TabItem
         mTabsContainer.setVisibility(GONE);
 
         mStepperType = StepperTypeFactory.createType(mTypeIdentifier, this);
-        mStepperFeedbackType = StepperFeedbackTypeFactory.createType(mFeedbackTypeIdentifier, this);
+        mStepperFeedbackType = StepperFeedbackTypeFactory.createType(mFeedbackTypeMask, this);
     }
 
     private void initNavigation() {
@@ -702,7 +725,7 @@ public class StepperLayout extends LinearLayout implements TabsContainer.TabItem
             }
 
             if (a.hasValue(R.styleable.StepperLayout_ms_stepperFeedbackType)) {
-                mFeedbackTypeIdentifier = a.getInt(R.styleable.StepperLayout_ms_stepperFeedbackType, AbstractStepperFeedbackType.NONE);
+                mFeedbackTypeMask = a.getInt(R.styleable.StepperLayout_ms_stepperFeedbackType, StepperFeedbackType.NONE);
             }
 
             mShowErrorStateOnBackEnabled = a.getBoolean(R.styleable.StepperLayout_ms_showErrorStateOnBack, false);

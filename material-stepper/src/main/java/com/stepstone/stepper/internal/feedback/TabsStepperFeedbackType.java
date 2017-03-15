@@ -27,18 +27,14 @@ import com.stepstone.stepper.R;
 import com.stepstone.stepper.StepperLayout;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY;
+import static com.stepstone.stepper.internal.util.AnimationUtil.ALPHA_INVISIBLE;
+import static com.stepstone.stepper.internal.util.AnimationUtil.ALPHA_OPAQUE;
 
 /**
  * Feedback stepper type which displays a progress message instead of the tabs.
  */
 @RestrictTo(LIBRARY)
-public class TabsOverlayStepperFeedbackType extends AbstractStepperFeedbackType {
-
-    private static final int PROGRESS_ANIMATION_DURATION = 200;
-
-    private static final float ALPHA_OPAQUE = 1.0f;
-    private static final float ALPHA_INVISIBLE = 0.0f;
-    private static final float ALPHA_HALF = 0.5f;
+public class TabsStepperFeedbackType implements StepperFeedbackType {
 
     private final float mProgressMessageTranslationWhenHidden;
 
@@ -46,18 +42,18 @@ public class TabsOverlayStepperFeedbackType extends AbstractStepperFeedbackType 
 
     private View mTabs;
 
-    public TabsOverlayStepperFeedbackType(@NonNull StepperLayout stepperLayout) {
-        super(stepperLayout);
+    private StepperLayout mStepperLayout;
+
+    public TabsStepperFeedbackType(@NonNull StepperLayout stepperLayout) {
         mProgressMessageTranslationWhenHidden = stepperLayout.getResources().getDimension(R.dimen.ms_progress_message_translation_when_hidden);
-        mProgressMessageTextView = (TextView) mStepperLayout.findViewById(R.id.ms_stepTabsProgressMessage);
-        mTabs = mStepperLayout.findViewById(R.id.ms_stepTabsScrollView);
+        mProgressMessageTextView = (TextView) stepperLayout.findViewById(R.id.ms_stepTabsProgressMessage);
+        mTabs = stepperLayout.findViewById(R.id.ms_stepTabsScrollView);
+        mStepperLayout = stepperLayout;
         mProgressMessageTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showProgress(@NonNull String progressMessage) {
-        super.showProgress(progressMessage);
-        setButtonsEnabled(false);
         setTabNavigationEnabled(false);
         mProgressMessageTextView.setText(progressMessage);
         mProgressMessageTextView.animate()
@@ -70,17 +66,10 @@ public class TabsOverlayStepperFeedbackType extends AbstractStepperFeedbackType 
                 .setStartDelay(0)
                 .setInterpolator(new LinearInterpolator())
                 .setDuration(PROGRESS_ANIMATION_DURATION);
-
-        mPagerProgressBar.setVisibility(View.VISIBLE);
-        mPager.animate()
-                .alpha(ALPHA_HALF)
-                .setDuration(PROGRESS_ANIMATION_DURATION);
     }
 
     @Override
     public void hideProgress() {
-        super.hideProgress();
-        setButtonsEnabled(true);
         setTabNavigationEnabled(true);
 
         mProgressMessageTextView.animate()
@@ -93,17 +82,6 @@ public class TabsOverlayStepperFeedbackType extends AbstractStepperFeedbackType 
                 .setStartDelay(PROGRESS_ANIMATION_DURATION)
                 .setInterpolator(new AccelerateInterpolator())
                 .setDuration(PROGRESS_ANIMATION_DURATION);
-
-        mPagerProgressBar.setVisibility(View.GONE);
-        mPager.animate()
-                .alpha(ALPHA_OPAQUE)
-                .setDuration(PROGRESS_ANIMATION_DURATION);
-    }
-
-    private void setButtonsEnabled(boolean enabled) {
-        mStepperLayout.setNextButtonEnabled(enabled);
-        mStepperLayout.setCompleteButtonEnabled(enabled);
-        mStepperLayout.setBackButtonEnabled(enabled);
     }
 
     private void setTabNavigationEnabled(boolean tabNavigationEnabled) {

@@ -24,13 +24,31 @@ import com.stepstone.stepper.StepperLayout;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY;
 
 /**
- * Feedback stepper type which does not modify the stepper layout to display changes.
+ * Feedback stepper type which disabled the buttons in the bottom navigation when an operation is in progress.
  */
 @RestrictTo(LIBRARY)
-public class NoStepperFeedbackType extends AbstractStepperFeedbackType {
+public class DisabledBottomNavigationStepperFeedbackType implements StepperFeedbackType {
 
-    public NoStepperFeedbackType(@NonNull StepperLayout stepperLayout) {
-        super(stepperLayout);
+    private StepperLayout mStepperLayout;
+
+    public DisabledBottomNavigationStepperFeedbackType(@NonNull StepperLayout stepperLayout) {
+        mStepperLayout = stepperLayout;
+    }
+
+    @Override
+    public void showProgress(@NonNull String progressMessage) {
+        setButtonsEnabled(false);
+    }
+
+    @Override
+    public void hideProgress() {
+        setButtonsEnabled(true);
+    }
+
+    private void setButtonsEnabled(boolean enabled) {
+        mStepperLayout.setNextButtonEnabled(enabled);
+        mStepperLayout.setCompleteButtonEnabled(enabled);
+        mStepperLayout.setBackButtonEnabled(enabled);
     }
 
 }
