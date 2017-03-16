@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MainCoordinatorLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,7 +10,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/MainAppBarLayoutStyle">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -22,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
-                app:layout_collapseMode="none"
+                style="@style/MainToolbarStyle"
                 app:titleTextColor="@color/ms_white" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -32,7 +33,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
-        android:layout_width="match_parent"
+        style="@style/MainListStyle"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|top"
         android:background="@color/ms_white"

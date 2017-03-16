@@ -87,4 +87,19 @@
         <item name="fontPath">fonts/Oswald-Stencbab.ttf</item>
     </style>
 
+
+    <style name="MainCoordinatorLayoutStyle" />
+
+    <style name="MainAppBarLayoutStyle">
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MainToolbarStyle">
+        <item name="layout_collapseMode">none</item>
+    </style>
+
+    <style name="MainListStyle">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
 </resources>

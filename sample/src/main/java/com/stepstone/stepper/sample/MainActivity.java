@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         private List<SampleItem> items;
 
-        public SampleItemAdapter() {
+        private SampleItemAdapter() {
             this.items = Arrays.asList(
                     new SampleItem(getString(R.string.default_dots), getString(R.string.default_dots_description), DefaultDotsActivity.class),
                     new SampleItem(getString(R.string.styled_dots), getString(R.string.styled_dots_description), StyledDotsActivity.class),
