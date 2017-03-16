@@ -29,10 +29,10 @@
     <string name="styled_progress_bar_description">Horizontal progress bar stepper styled through view attributes in the layout file</string>
     <string name="default_tabs_description">The default implementation of a tabbed stepper</string>
     <string name="styled_tabs_description">Tabbed stepper styled through view attributes in the layout file</string>
-    <string name="error_tabs_description">Tabbed stepper which also shows an error on the tab when it occurs</string>
-    <string name="error_color_tabs_description">Tabbed stepper which also shows an error on the tab when it occurs with a custom error color</string>
-    <string name="error_back_tabs_description">Tabbed stepper which also shows an error on the tab when it occurs and keeps it displayed when going to a previous step</string>
-    <string name="combination_description">Shows the dotted stepper when the device is in portrait mode and tabs when in landscape</string>
+    <string name="error_tabs_description">Tabbed stepper which also shows an error on a tab when it occurs</string>
+    <string name="error_color_tabs_description">Tabbed stepper which also shows an error on a tab when it occurs with a custom error color</string>
+    <string name="error_back_tabs_description">Tabbed stepper which also shows an error on a tab when it occurs and keeps it displayed when going to a previous step</string>
+    <string name="combination_description">Shows a dotted stepper when the device is in portrait mode and tabs when in landscape</string>
     <string name="custom_page_transformer_description">Shows how to use a custom PageTransformer when switching between steps</string>
     <string name="delayed_transition_description">Shows how to use a BlockingStep for long-running operations when going to next steps.</string>
     <string name="stepper_feedback_description">Stepper feedback sample for long running operations. Different feedback types can be selected.</string>
@@ -40,8 +40,8 @@
     <string name="show_back_button_description">Show how to display a Back button on the first step of the stepper layout.</string>
     <string name="no_fragments_description">StepperLayout used with pure Views instead of Fragments</string>
     <string name="proceed_programmatically_description">Shows how to navigate to the next steps without clicking on the bottom navigation buttons</string>
-    <string name="disabled_tab_navigation_description">Shows how to disable clicking on the tabs in a tabbed stepper</string>
-    <string name="custom_stepperlayout_theme_description">Shows a custom-styled stepper layout with custom fonts &amp; colors</string>
+    <string name="disabled_tab_navigation_description">Shows how to disable clicking on tabs in a tabbed stepper</string>
+    <string name="custom_stepperlayout_theme_description">Shows a styled stepper layout with custom fonts &amp; colors</string>
 
     <string name="tab_title">Tab title</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, sale viris intellegam usu eu, persius patrioque sea at. Ne salutandi repudiandae mei, cu mollis accusam mediocrem mea. Altera dolorem praesent at vis. Torquatos philosophia ad quo. Omnis adipiscing has ea, mel no hinc iudico percipit.</string>
